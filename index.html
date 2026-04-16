@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Battle Artistry Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    :root {
+      --stone-50: #fafaf9;
+      --stone-100: #f5f5f4;
+      --stone-200: #e7e5e4;
+      --stone-300: #d6d3d1;
+      --stone-500: #78716c;
+      --stone-600: #57534e;
+      --stone-700: #44403c;
+      --stone-900: #1c1917;
+      --paper: #efe2bf;
+      --paper-2: #f6ecd1;
+      --ink: #2f2a23;
+      --line: #3f3a32;
+      --accent: #7c5a10;
+      --accent-soft: #d6c08d;
+      --danger: #7f1d1d;
+      --danger-soft: #f3d6d6;
+      --success: #365314;
+      --success-soft: #dce9c9;
+      --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 20px rgba(0,0,0,.05);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body {
+      background: var(--stone-100);
+      color: var(--stone-900);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .page {
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 420px);
+      gap: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--stone-50);
+      border: 1px solid var(--stone-300);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-paper {
+      background: linear-gradient(180deg, var(--paper-2), var(--paper));
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 30px;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      align-content: start;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--stone-300);
+      background: rgba(255,255,255,.65);
+      color: var(--stone-900);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease, transform .15s ease, border-color .15s ease;
+    }
+    .btn:hover { background: rgba(255,255,255,.95); }
+    .btn:active { transform: translateY(1px); }
+
+    .section {
+      margin-bottom: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .section-note {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--stone-600);
+    }
+
+    .counter {
+      flex-shrink: 0;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stone-300);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--stone-700);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .node {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--stone-300);
+      background: rgba(255,255,255,.78);
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+      position: relative;
+    }
+
+    .node:hover {
+      transform: translateY(-1px);
+      border-color: #b9b4af;
+      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+    }
+
+    .node.selected {
+      background: #fff7df;
+      border-color: #b89443;
+      box-shadow: 0 8px 18px rgba(124, 90, 16, .13);
+    }
+
+    .node.locked {
+      opacity: .55;
+      cursor: not-allowed;
+      filter: grayscale(.1);
+    }
+
+    .node.gambit {
+      background: linear-gradient(180deg, #fff9f9, #fff2f2);
+    }
+
+    .node.gambit.selected {
+      background: linear-gradient(180deg, #fff0f0, #ffe2e2);
+      border-color: #b65b5b;
+      box-shadow: 0 8px 18px rgba(127, 29, 29, .12);
+    }
+
+    .icon-wrap {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      border: 1px solid rgba(63,58,50,.15);
+      background: rgba(255,255,255,.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    .icon-wrap svg {
+      width: 32px;
+      height: 32px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-wrap img.clipart-icon {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      display: block;
+      filter: brightness(0) saturate(100%);
+    }
+
+    .icon-wrap .ms-icon {
+      font-family: 'Material Symbols Sharp';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 36px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: 'liga';
+      -webkit-font-feature-settings: 'liga';
+      color: currentColor;
+    }
+
+    .node.selected .icon-wrap {
+      background: rgba(214, 192, 141, .28);
+      border-color: rgba(124, 90, 16, .25);
+    }
+
+    .node.gambit.selected .icon-wrap {
+      background: rgba(243, 214, 214, .5);
+      border-color: rgba(127, 29, 29, .22);
+    }
+
+    .node-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .node-name {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .node-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      border: 1px solid rgba(63,58,50,.12);
+      background: rgba(255,255,255,.75);
+      color: var(--stone-700);
+      padding: 5px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .pill.danger {
+      background: #fff3f3;
+      border-color: #e5c2c2;
+      color: var(--danger);
+    }
+
+    .pill.success {
+      background: #f2f8e9;
+      border-color: #d4e3bc;
+      color: var(--success);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-block {
+      padding: 16px;
+    }
+
+    .summary-title {
+      margin: 0 0 6px;
+      font-size: 22px;
+      line-height: 1.1;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .build-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .build-item {
+      border: 1px solid var(--stone-300);
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      padding: 12px;
+    }
+
+    .build-item.gambit {
+      background: #fff4f4;
+      border-color: #e4c6c6;
+    }
+
+    .build-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .build-item-name {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .rules {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rule {
+      border-left: 3px solid rgba(63,58,50,.18);
+      padding-left: 10px;
+    }
+
+    .rule strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--stone-600);
+      margin-bottom: 4px;
+    }
+
+    .rule p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--stone-700);
+    }
+
+    .trigger-prefix {
+      font-weight: 700;
+      color: var(--stone-700);
+    }
+
+    .empty {
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.65);
+      border: 1px dashed var(--stone-300);
+      color: var(--stone-600);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stone-300);
+      background: rgba(255,255,255,.72);
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--stone-700);
+    }
+
+    .meta-pill strong {
+      color: var(--stone-900);
+      font-weight: 700;
+    }
+
+    @media (max-width: 1220px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .header { grid-template-columns: 1fr; }
+      .controls { justify-content: flex-start; }
+      .page { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="layout">
+      <main>
+        <section class="card card-paper panel">
+          <div class="header">
+            <div>
+              <h1 class="title">Battle Artistry Builder</h1>
+            </div>
+            <div class="controls"></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-pill"><strong>Tempo</strong><span>3 start · 5 max</span></div>
+            <div class="meta-pill"><strong>Exposed</strong><span>-1 AC · Ends at the start of your next turn or when hit by a weapon attack</span></div>
+            <div class="meta-pill"><strong>Battle Artistry DC</strong><span>8 + Prof + STR/DEX</span></div>
+          </div>
+        </section>
+
+        <section class="card panel section">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Aspects of War</h2>
+              <p class="section-note">Choose 1 active Aspect at the end of each short or long rest.</p>
+            </div>
+            <div class="counter" id="aspectCounter">0 / 1 selected</div>
+          </div>
+          <div class="grid" id="aspectGrid"></div>
+        </section>
+
+        <section class="card panel section">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Maneuvers</h2>
+              <p class="section-note">Choose up to 4 combat techniques.</p>
+            </div>
+            <div class="counter" id="maneuverCounter">0 / 4 selected</div>
+          </div>
+          <div class="grid" id="maneuverGrid"></div>
+        </section>
+
+        <section class="card panel section">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Gambits</h2>
+              <p class="section-note">Choose up to 2 Gambits.</p>
+            </div>
+            <div class="counter" id="gambitCounter">0 / 2 selected</div>
+          </div>
+          <div class="grid" id="gambitGrid"></div>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <section class="card summary-block" id="buildSummary"></section>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const icons = {
+      bastion: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"/><path d="M12 8v8"/><path d="M8.5 12H15.5"/></svg>`,
+      pursuit: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/@tabler/icons@3.41.1/icons/outline/run.svg" alt="Pursuit">`,
+      duelist: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F93A.svg" alt="Duelist">`,
+      judgment: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/2696.svg" alt="Judgment">`,
+      openingFeint: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18c5-7 11-10 16-10"/><path d="M14 5h6v6"/><path d="M5 7c2 0 4 1 5 3"/></svg>`,
+      breakGuard: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"/><path d="M8 16l8-8"/></svg>`,
+      drivingStrike: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v7"/><path d="M8 7l4-4 4 4"/><path d="M5 14c2.5 2 5.2 3 7 3s4.5-1 7-3"/><path d="M7 18c1.5 1 3.2 2 5 2s3.5-1 5-2"/></svg>`,
+      hamstringCut: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F9B5.svg" alt="Hamstring Cut">`,
+      brace: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F6E1.svg" alt="Brace">`,
+      aftershock: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F4A5.svg" alt="Aftershock">`,
+      interpose: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="12" r="2.5"/><circle cx="17" cy="12" r="2.5"/><path d="M10.5 7.5l3 9"/><path d="M13.5 7.5l-3 9"/></svg>`,
+      riposte: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/2694.svg" alt="Riposte">`,
+      surgeThrough: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F3C3.svg" alt="Surge Through">`,
+      finishOpening: `<span class="ms-icon" aria-label="Fianchetto" role="img">chess_bishop</span>`,
+      recklessAdvance: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/@tabler/icons@3.41.1/icons/outline/axe.svg" alt="Reckless Advance">`,
+      baitTheBlow: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F3A3.svg" alt="Bait the Blow">`,
+      holdTheLine: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/@tabler/icons@3.41.1/icons/outline/user-shield.svg" alt="Hold the Line">`,
+      allInVerdict: `<img class="clipart-icon" src="https://cdn.jsdelivr.net/npm/openmoji@16.0.0/black/svg/1F5E1.svg" alt="All-In Verdict">`
+    };
+
+    const aspects = [
+      { id: 'bastion', type: 'aspect', name: 'Bastion', icon: 'bastion', aspectBonus: 'All allies within 5 feet of you gain a +1 bonus to AC.', passive: 'If you moved 10 feet or less on your turn, hostile creatures treat the space within your reach as difficult terrain until the start of your next turn.', tempo: 'Once per round, regain 1 Tempo when you heal an allied creature, reduce incoming damage to an allied creature, or cause an attack to miss that creature.' },
+      { id: 'pursuit', type: 'aspect', name: 'Pursuit', icon: 'pursuit', aspectBonus: 'Your movement speed increases by 10 feet.', passive: 'The first time each turn you move at least 10 feet toward a creature before making a melee weapon attack against that creature, that attack gains +1 to hit. On a hit, you may move 5 feet without provoking opportunity attacks from that creature.', tempo: 'Regain 1 Tempo when you hit a creature with a melee attack after moving at least 10 feet toward it this turn.' },
+      { id: 'duelist', type: 'aspect', name: 'Duelist', icon: 'duelist', aspectBonus: 'You gain a +4 bonus to initiative rolls and a +2 bonus to AC against opportunity attacks.', passive: 'The first Maneuver you use each round against a creature that has no ally within 5 feet of it costs 1 less Tempo, to a minimum of 0.', tempo: 'Regain 1 Tempo when you land a critical hit on a creature with a melee weapon attack. Regain 2 Tempo instead if the creature is Exposed.' },
+      { id: 'judgment', type: 'aspect', name: 'Judgment', icon: 'judgment', aspectBonus: 'You gain a +2 bonus to weapon attack rolls against Exposed targets.', passive: 'As a bonus action, choose one creature you can see. That creature becomes Exposed.', tempo: 'Regain 1 Tempo when an Exposed creature dies within your reach.' }
+    ];
+
+    const maneuvers = [
+      { id: 'opening-feint', type: 'maneuver', name: 'Opening Feint', icon: 'openingFeint', cost: '1 Tempo', timing: 'Bonus action, choose a creature within reach', description: 'The next melee weapon attack you make against that creature before the end of the turn gains +2 to hit. On a hit, the target becomes Exposed and cannot make opportunity attacks against you until the end of the turn.' },
+      { id: 'break-guard', type: 'maneuver', name: 'Break Guard', icon: 'breakGuard', cost: '1 Tempo', timing: 'After you hit with a melee weapon attack', description: 'The next attack against the target before the start of your next turn gains +2 to hit. If the target is Exposed, that next attack also deals extra damage equal to your proficiency bonus.' },
+      { id: 'war-cry', type: 'maneuver', name: 'War Cry', icon: 'drivingStrike', cost: '2 Tempo', timing: 'Bonus action', description: 'Each hostile creature within 10 feet of you must make a Wisdom saving throw. On a failed save, a creature becomes Exposed. If that creature is already Exposed, it is Frightened of you until the start of your next turn instead. On a successful save, it is unaffected.' },
+      { id: 'hamstring-cut', type: 'maneuver', name: 'Hamstring Cut', icon: 'hamstringCut', cost: '1 Tempo', timing: 'After you hit with a melee weapon attack', description: 'The target’s speed is reduced by 15 feet until the start of your next turn. If the target is Exposed, it must make a Constitution saving throw. On a failed save, it is Restrained until the start of your next turn. On a success, its speed is reduced to 0 until the start of your next turn instead.' },
+      { id: 'surge-through', type: 'maneuver', name: 'Surge Through', icon: 'surgeThrough', cost: '1 Tempo', timing: 'Bonus action', description: 'Move up to your speed. This movement ignores difficult terrain and does not provoke opportunity attacks.' },
+      { id: 'brace', type: 'maneuver', name: 'Brace', icon: 'brace', cost: '1 Tempo', timing: 'Reaction, when a creature you can see makes an attack roll against you.', description: 'Impose disadvantage on the triggering attack roll. If the attack misses, the attacker becomes Exposed.' },
+      { id: 'interpose', type: 'maneuver', name: 'Interpose', icon: 'interpose', cost: '1 Tempo', timing: 'Reaction, when an ally within 5 feet of you is targeted by an attack.', description: 'That ally gains a +2 bonus to AC against the triggering attack. If the attack still hits, reduce the damage by twice your proficiency bonus. If the attacker is within your reach, it becomes Exposed.' },
+      { id: 'riposte', type: 'maneuver', name: 'Riposte', icon: 'riposte', cost: '1 Tempo', timing: 'Reaction, when a creature in your reach misses you with a melee attack.', description: 'Make one melee weapon attack against that creature. On a hit, choose one: you move 5 feet without provoking opportunity attacks from it, or the creature becomes Exposed.' },
+      { id: 'aftershock', type: 'maneuver', name: 'Aftershock', icon: 'aftershock', cost: '3 Tempo', timing: 'After you hit with a melee weapon attack', description: 'Each hostile creature within 15 feet of the target, including the target, must make a Dexterity saving throw. On a failed save, a creature takes damage equal to half the damage dealt by the triggering attack, or the full damage instead if that creature is Exposed. On a successful save, it takes no damage.' },
+      { id: 'fianchetto', type: 'maneuver', name: 'Fianchetto', icon: 'finishOpening', cost: '2 Tempo', timing: 'After you hit a flanked creature with a melee weapon attack', description: 'Choose an allied creature that is flanking the target. That creature may make a single melee weapon attack against the target. On a hit, add one extra damage die to that attack. If the target is Exposed, add two extra damage dice instead.' }
+    ];
+
+    const gambits = [
+      { id: 'reckless-advance', type: 'gambit', name: 'Reckless Advance', icon: 'recklessAdvance', cost: '1 Tempo', timing: 'Before making a melee weapon attack', risk: 'If the attack misses, roll the weapon’s damage as though it had critically hit. You take that damage instead.', description: 'If the attack hits, it counts as a critical hit.' },
+      { id: 'bait-the-blow', type: 'gambit', name: 'Bait the Blow', icon: 'baitTheBlow', cost: '0 Tempo', timing: 'Bonus action', risk: 'If the creature’s attack hits, you lose 1 Tempo if able, become Exposed, and cannot take reactions until the start of your next turn.', description: 'Choose a creature in your reach. Until the start of your next turn, the first melee attack that creature makes against you has advantage. If the creature’s attack misses, you may immediately make a single melee weapon attack against it. If your attack hits, it counts as a critical hit and you regain 1 Tempo.' },
+      { id: 'hold-the-line', type: 'gambit', name: 'Hold the Line', icon: 'holdTheLine', cost: '2 Tempo', timing: 'Reaction, when an ally within 10 feet would be hit by an attack.', risk: 'You are Exposed, and until the end of your next turn your speed becomes 0.', description: 'Move up to 10 feet to a space adjacent to that ally. The triggering attack misses instead. Until the start of your next turn, the attacker has disadvantage on attack rolls against creatures other than you.' },
+      { id: 'all-in-verdict', type: 'gambit', name: 'All-In Verdict', icon: 'allInVerdict', cost: '2 Tempo', timing: 'Before making a melee weapon attack against an Exposed creature', risk: 'If the target is not reduced to 0 HP by the end of your turn, you become Exposed and cannot take reactions until the start of your next turn.', description: 'If the attack hits, add three extra weapon damage dice to the attack. If that attack reduces the target to 0 HP, regain 2 Tempo.' }
+    ];
+
+    const state = { selectedAspect: null, maneuvers: [], gambits: [] };
+
+    function getAllItems() { return [...aspects, ...maneuvers, ...gambits]; }
+    function getItemById(id) { return getAllItems().find(item => item.id === id) || null; }
+    function selectionCountText(current, max) { return `${current} / ${max} selected`; }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function capitalizeTrigger(value) {
+      const text = String(value || '').trim();
+      if (!text) return '';
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function getTimingParts(timing) {
+      if (!timing) return { action: '', trigger: '' };
+      const value = String(timing).trim();
+      const commaIndex = value.indexOf(',');
+      if (value.startsWith('Reaction')) return { action: 'Reaction', trigger: commaIndex >= 0 ? value.slice(commaIndex + 1).trim() : '' };
+      if (value.startsWith('Bonus action')) return { action: 'Bonus action', trigger: commaIndex >= 0 ? value.slice(commaIndex + 1).trim() : '' };
+      if (value.startsWith('Action')) return { action: 'Action', trigger: commaIndex >= 0 ? value.slice(commaIndex + 1).trim() : '' };
+      if (value.startsWith('Once per turn')) return { action: 'Once per turn', trigger: commaIndex >= 0 ? value.slice(commaIndex + 1).trim() : '' };
+      if (value.startsWith('After you hit')) return { action: 'On hit', trigger: value };
+      if (value.startsWith('Before making')) return { action: 'Before attack', trigger: value };
+      return { action: value, trigger: '' };
+    }
+
+    function renderEffectText(item) {
+      const timing = getTimingParts(item.timing);
+      const parts = [];
+      if (timing.trigger) parts.push(`<span class="trigger-prefix">Trigger:</span> ${escapeHtml(capitalizeTrigger(timing.trigger))}`);
+      if (item.description) parts.push(escapeHtml(item.description));
+      return parts.join('<br>');
+    }
+
+    function itemMetaPills(item) {
+      const pills = [];
+      const timing = getTimingParts(item.timing);
+      if (item.cost) pills.push(`<span class="pill">${escapeHtml(item.cost)}</span>`);
+      if (timing.action) pills.push(`<span class="pill">${escapeHtml(timing.action)}</span>`);
+      if (item.type === 'gambit') pills.push(`<span class="pill danger">Risk</span>`);
+      if (item.type === 'aspect') pills.push(`<span class="pill success">Aspect</span>`);
+      return pills.join('');
+    }
+
+    function isSelected(item) {
+      if (item.type === 'aspect') return state.selectedAspect === item.id;
+      if (item.type === 'maneuver') return state.maneuvers.includes(item.id);
+      if (item.type === 'gambit') return state.gambits.includes(item.id);
+      return false;
+    }
+
+    function isLocked(item) {
+      if (item.type === 'maneuver') return !state.maneuvers.includes(item.id) && state.maneuvers.length >= 4;
+      if (item.type === 'gambit') return !state.gambits.includes(item.id) && state.gambits.length >= 2;
+      return false;
+    }
+
+    function renderNodeDetails(item) {
+      if (item.type === 'aspect') {
+        return `<div class="rules"><div class="rule"><strong>Aspect Bonus</strong><p>${escapeHtml(item.aspectBonus)}</p></div><div class="rule"><strong>Aspect Passive</strong><p>${escapeHtml(item.passive)}</p></div><div class="rule"><strong>Tempo Trigger</strong><p>${escapeHtml(item.tempo)}</p></div></div>`;
+      }
+      if (item.type === 'gambit') {
+        return `<div class="rules"><div class="rule"><strong>Effect</strong><p>${renderEffectText(item)}</p></div><div class="rule"><strong>Risk</strong><p>${escapeHtml(item.risk)}</p></div></div>`;
+      }
+      return `<div class="rules"><div class="rule"><strong>Effect</strong><p>${renderEffectText(item)}</p></div></div>`;
+    }
+
+    function renderNode(item) {
+      const selected = isSelected(item);
+      const locked = isLocked(item);
+      const nodeClass = ['node', item.type === 'gambit' ? 'gambit' : '', selected ? 'selected' : '', locked ? 'locked' : ''].join(' ').trim();
+      return `<article class="${nodeClass}" data-card-id="${escapeHtml(item.id)}" role="button" tabindex="0" aria-pressed="${selected ? 'true' : 'false'}"><div class="icon-wrap">${icons[item.icon] || ''}</div><div><div class="node-top"><h3 class="node-name">${escapeHtml(item.name)}</h3></div><div class="node-meta">${itemMetaPills(item)}</div>${renderNodeDetails(item)}</div></article>`;
+    }
+
+    function renderGrid() {
+      document.getElementById('aspectGrid').innerHTML = aspects.map(renderNode).join('');
+      document.getElementById('maneuverGrid').innerHTML = maneuvers.map(renderNode).join('');
+      document.getElementById('gambitGrid').innerHTML = gambits.map(renderNode).join('');
+      document.getElementById('aspectCounter').textContent = selectionCountText(state.selectedAspect ? 1 : 0, 1);
+      document.getElementById('maneuverCounter').textContent = selectionCountText(state.maneuvers.length, 4);
+      document.getElementById('gambitCounter').textContent = selectionCountText(state.gambits.length, 2);
+      document.querySelectorAll('[data-card-id]').forEach(card => {
+        const id = card.getAttribute('data-card-id');
+        card.addEventListener('click', () => toggleSelection(id));
+        card.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleSelection(id);
+          }
+        });
+      });
+    }
+
+    function toggleSelection(id) {
+      const item = getItemById(id);
+      if (!item) return;
+      if (item.type === 'aspect') {
+        state.selectedAspect = state.selectedAspect === id ? null : id;
+      } else if (item.type === 'maneuver') {
+        const exists = state.maneuvers.includes(id);
+        if (exists) state.maneuvers = state.maneuvers.filter(entry => entry !== id);
+        else if (state.maneuvers.length < 4) state.maneuvers = [...state.maneuvers, id];
+      } else if (item.type === 'gambit') {
+        const exists = state.gambits.includes(id);
+        if (exists) state.gambits = state.gambits.filter(entry => entry !== id);
+        else if (state.gambits.length < 2) state.gambits = [...state.gambits, id];
+      }
+      render();
+    }
+
+    function renderBuildSummary() {
+      const aspect = getItemById(state.selectedAspect);
+      const selectedManeuvers = state.maneuvers.map(getItemById).filter(Boolean);
+      const selectedGambits = state.gambits.map(getItemById).filter(Boolean);
+      const aspectHtml = aspect ? `<div class="build-item"><div class="build-item-head"><h3 class="build-item-name">${escapeHtml(aspect.name)}</h3></div></div>` : `<div class="empty">No Aspect selected yet.</div>`;
+      const maneuverHtml = selectedManeuvers.length ? selectedManeuvers.map(item => `<div class="build-item"><div class="build-item-head"><h3 class="build-item-name">${escapeHtml(item.name)}</h3></div></div>`).join('') : `<div class="empty">No Maneuvers selected yet.</div>`;
+      const gambitHtml = selectedGambits.length ? selectedGambits.map(item => `<div class="build-item gambit"><div class="build-item-head"><h3 class="build-item-name">${escapeHtml(item.name)}</h3></div></div>`).join('') : `<div class="empty">No Gambits selected yet.</div>`;
+      document.getElementById('buildSummary').innerHTML = `<div style="display:flex; justify-content:space-between; align-items:start; gap:12px;"><h2 class="summary-title">Current Build</h2><button class="btn" id="resetBtn" type="button">Reset</button></div><div class="build-list"><div><h3 class="section-title" style="font-size:18px; margin:0 0 10px;">Aspect</h3><div class="build-list">${aspectHtml}</div></div><div><h3 class="section-title" style="font-size:18px; margin:0 0 10px;">Maneuvers</h3><div class="build-list">${maneuverHtml}</div></div><div><h3 class="section-title" style="font-size:18px; margin:0 0 10px;">Gambits</h3><div class="build-list">${gambitHtml}</div></div></div>`;
+      const resetBtn = document.getElementById('resetBtn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', resetBuild);
+      }
+    }
+
+    function render() {
+      renderGrid();
+      renderBuildSummary();
+    }
+
+    function resetBuild() {
+      state.selectedAspect = null;
+      state.maneuvers = [];
+      state.gambits = [];
+      render();
+    }
+
+    function runSelfTests() {
+      console.assert(typeof resetBuild === 'function', 'resetBuild should be defined.');
+      console.assert(getTimingParts('Reaction, when an ally within 10 feet would be hit by an attack.').action === 'Reaction', 'Timing parser should identify Reaction.');
+      console.assert(getTimingParts('Before making a melee weapon attack').action === 'Before attack', 'Timing parser should identify Before attack.');
+      console.assert(document.getElementById('resetBtn'), 'Reset button should exist after render.');
+      resetBuild();
+      console.assert(JSON.stringify(state) === JSON.stringify({ selectedAspect: null, maneuvers: [], gambits: [] }), 'resetBuild should clear selections.');
+    }
+
+    render();
+    runSelfTests();
+  </script>
+</body>
+</html>
