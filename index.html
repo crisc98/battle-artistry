@@ -9,34 +9,125 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
   <style>
     :root {
-      --stone-50: #fafaf9;
-      --stone-100: #f5f5f4;
-      --stone-200: #e7e5e4;
-      --stone-300: #d6d3d1;
-      --stone-500: #78716c;
-      --stone-600: #57534e;
-      --stone-700: #44403c;
-      --stone-900: #1c1917;
-      --paper: #efe2bf;
-      --paper-2: #f6ecd1;
-      --ink: #2f2a23;
-      --line: #3f3a32;
-      --accent: #7c5a10;
-      --accent-soft: #d6c08d;
-      --danger: #7f1d1d;
-      --danger-soft: #f3d6d6;
-      --success: #365314;
-      --success-soft: #dce9c9;
-      --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 20px rgba(0,0,0,.05);
       --radius: 18px;
+      --accent: #d4a756;
+      --accent-strong: #f2c36f;
+      --danger: #ff9b9b;
+      --danger-soft: rgba(255, 155, 155, .14);
+      --danger-border: rgba(255, 155, 155, .32);
+      --success: #a5e06a;
+      --success-soft: rgba(165, 224, 106, .14);
+      --success-border: rgba(165, 224, 106, .32);
+      --shadow: 0 24px 60px rgba(0, 0, 0, .34);
+      --icon-image-filter: brightness(0) invert(1) saturate(0);
+      --focus-ring: 0 0 0 3px rgba(212, 167, 86, .28);
+
+      --body-bg:
+        radial-gradient(circle at top, rgba(84, 115, 190, .16), transparent 30%),
+        linear-gradient(180deg, #09111f 0%, #0d1728 56%, #0a1220 100%);
+      --body-color: #edf2f7;
+      --title-color: #f8fafc;
+      --text-muted: #d6deeb;
+      --text-soft: #9eabc1;
+      --surface: rgba(18, 26, 42, .92);
+      --surface-paper: linear-gradient(180deg, rgba(28, 39, 61, .96), rgba(18, 27, 44, .98));
+      --border: rgba(255, 255, 255, .08);
+      --border-strong: rgba(255, 255, 255, .15);
+      --button-bg: rgba(255, 255, 255, .05);
+      --button-bg-hover: rgba(255, 255, 255, .1);
+      --button-text: #edf2f7;
+      --counter-bg: rgba(255, 255, 255, .06);
+      --counter-text: #dbe4f1;
+      --node-bg: rgba(255, 255, 255, .04);
+      --node-bg-hover: rgba(255, 255, 255, .07);
+      --node-selected-bg: linear-gradient(180deg, rgba(212, 167, 86, .24), rgba(212, 167, 86, .12));
+      --node-selected-border: rgba(212, 167, 86, .72);
+      --gambit-bg: linear-gradient(180deg, rgba(255, 155, 155, .12), rgba(255, 155, 155, .06));
+      --gambit-selected-bg: linear-gradient(180deg, rgba(255, 155, 155, .22), rgba(255, 155, 155, .1));
+      --gambit-selected-border: rgba(255, 155, 155, .58);
+      --icon-bg: rgba(255, 255, 255, .05);
+      --icon-border: rgba(255, 255, 255, .1);
+      --pill-bg: rgba(255, 255, 255, .06);
+      --pill-border: rgba(255, 255, 255, .1);
+      --pill-text: #d3dbe8;
+      --rule-border: rgba(255, 255, 255, .12);
+      --empty-bg: rgba(255, 255, 255, .03);
+      --empty-border: rgba(255, 255, 255, .14);
+      --meta-bg: rgba(255, 255, 255, .05);
+      --meta-border: rgba(255, 255, 255, .08);
+    }
+
+    body[data-theme="light"] {
+      --accent: #7c5a10;
+      --accent-strong: #9c741d;
+      --danger: #7f1d1d;
+      --danger-soft: #fff3f3;
+      --danger-border: #e5c2c2;
+      --success: #365314;
+      --success-soft: #f2f8e9;
+      --success-border: #d4e3bc;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 8px 20px rgba(0, 0, 0, .05);
+      --icon-image-filter: brightness(0) saturate(100%);
+      --focus-ring: 0 0 0 3px rgba(124, 90, 16, .18);
+
+      --body-bg: linear-gradient(180deg, #f5f5f4 0%, #efede8 100%);
+      --body-color: #1c1917;
+      --title-color: #2f2a23;
+      --text-muted: #44403c;
+      --text-soft: #57534e;
+      --surface: rgba(250, 250, 249, .94);
+      --surface-paper: linear-gradient(180deg, #f6ecd1, #efe2bf);
+      --border: #d6d3d1;
+      --border-strong: #b9b4af;
+      --button-bg: rgba(255, 255, 255, .68);
+      --button-bg-hover: rgba(255, 255, 255, .96);
+      --button-text: #1c1917;
+      --counter-bg: #ffffff;
+      --counter-text: #44403c;
+      --node-bg: rgba(255, 255, 255, .78);
+      --node-bg-hover: rgba(255, 255, 255, .95);
+      --node-selected-bg: #fff7df;
+      --node-selected-border: #b89443;
+      --gambit-bg: linear-gradient(180deg, #fff9f9, #fff2f2);
+      --gambit-selected-bg: linear-gradient(180deg, #fff0f0, #ffe2e2);
+      --gambit-selected-border: #b65b5b;
+      --icon-bg: rgba(255, 255, 255, .6);
+      --icon-border: rgba(63, 58, 50, .15);
+      --pill-bg: rgba(255, 255, 255, .75);
+      --pill-border: rgba(63, 58, 50, .12);
+      --pill-text: #44403c;
+      --rule-border: rgba(63, 58, 50, .18);
+      --empty-bg: rgba(255, 255, 255, .65);
+      --empty-border: #d6d3d1;
+      --meta-bg: rgba(255, 255, 255, .72);
+      --meta-border: #d6d3d1;
     }
 
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; min-height: 100%; }
+
+    html {
+      color-scheme: dark;
+      scroll-behavior: smooth;
+    }
+
     body {
-      background: var(--stone-100);
-      color: var(--stone-900);
+      background: var(--body-bg);
+      color: var(--body-color);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      transition: background .25s ease, color .2s ease;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(212, 167, 86, .12), transparent 25%),
+        radial-gradient(circle at 85% 0%, rgba(108, 138, 215, .14), transparent 24%);
+      opacity: .9;
+      z-index: -1;
     }
 
     .page {
@@ -54,15 +145,17 @@
     }
 
     .card {
-      background: var(--stone-50);
-      border: 1px solid var(--stone-300);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 20px;
       box-shadow: var(--shadow);
       overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
 
     .card-paper {
-      background: linear-gradient(180deg, var(--paper-2), var(--paper));
+      background: var(--surface-paper);
     }
 
     .panel {
@@ -74,6 +167,7 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 16px;
       margin-bottom: 16px;
+      align-items: start;
     }
 
     .title {
@@ -82,7 +176,7 @@
       font-weight: 800;
       letter-spacing: -.03em;
       margin: 0;
-      color: var(--ink);
+      color: var(--title-color);
     }
 
     .controls {
@@ -95,18 +189,62 @@
 
     .btn {
       appearance: none;
-      border: 1px solid var(--stone-300);
-      background: rgba(255,255,255,.65);
-      color: var(--stone-900);
+      border: 1px solid var(--border);
+      background: var(--button-bg);
+      color: var(--button-text);
       padding: 10px 14px;
       border-radius: 14px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: background .15s ease, transform .15s ease, border-color .15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background .15s ease, transform .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
     }
-    .btn:hover { background: rgba(255,255,255,.95); }
+
+    .btn:hover {
+      background: var(--button-bg-hover);
+      border-color: var(--border-strong);
+    }
+
     .btn:active { transform: translateY(1px); }
+
+    .btn:focus-visible,
+    .node:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .theme-toggle {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 999px;
+    }
+
+    .ms-icon {
+      font-family: 'Material Symbols Sharp';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: 'liga';
+      -webkit-font-feature-settings: 'liga';
+      color: currentColor;
+    }
+
+    .theme-toggle .ms-icon {
+      font-size: 22px;
+    }
 
     .section {
       margin-bottom: 18px;
@@ -125,24 +263,24 @@
       font-size: 20px;
       line-height: 1.15;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--title-color);
     }
 
     .section-note {
       margin: 4px 0 0;
       font-size: 13px;
-      color: var(--stone-600);
+      color: var(--text-soft);
     }
 
     .counter {
       flex-shrink: 0;
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid var(--stone-300);
-      background: #fff;
+      border: 1px solid var(--border);
+      background: var(--counter-bg);
       font-size: 12px;
       font-weight: 800;
-      color: var(--stone-700);
+      color: var(--counter-text);
     }
 
     .grid {
@@ -158,23 +296,24 @@
       align-items: start;
       padding: 14px;
       border-radius: 18px;
-      border: 1px solid var(--stone-300);
-      background: rgba(255,255,255,.78);
+      border: 1px solid var(--border);
+      background: var(--node-bg);
       cursor: pointer;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease, opacity .15s ease;
       position: relative;
     }
 
     .node:hover {
       transform: translateY(-1px);
-      border-color: #b9b4af;
-      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+      background: var(--node-bg-hover);
+      border-color: var(--border-strong);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .14);
     }
 
     .node.selected {
-      background: #fff7df;
-      border-color: #b89443;
-      box-shadow: 0 8px 18px rgba(124, 90, 16, .13);
+      background: var(--node-selected-bg);
+      border-color: var(--node-selected-border);
+      box-shadow: 0 14px 28px rgba(212, 167, 86, .14);
     }
 
     .node.locked {
@@ -184,26 +323,27 @@
     }
 
     .node.gambit {
-      background: linear-gradient(180deg, #fff9f9, #fff2f2);
+      background: var(--gambit-bg);
     }
 
     .node.gambit.selected {
-      background: linear-gradient(180deg, #fff0f0, #ffe2e2);
-      border-color: #b65b5b;
-      box-shadow: 0 8px 18px rgba(127, 29, 29, .12);
+      background: var(--gambit-selected-bg);
+      border-color: var(--gambit-selected-border);
+      box-shadow: 0 14px 28px rgba(180, 68, 68, .16);
     }
 
     .icon-wrap {
       width: 58px;
       height: 58px;
       border-radius: 16px;
-      border: 1px solid rgba(63,58,50,.15);
-      background: rgba(255,255,255,.6);
+      border: 1px solid var(--icon-border);
+      background: var(--icon-bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--ink);
+      color: var(--title-color);
       overflow: hidden;
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
     }
 
     .icon-wrap svg {
@@ -221,35 +361,21 @@
       height: 38px;
       object-fit: contain;
       display: block;
-      filter: brightness(0) saturate(100%);
+      filter: var(--icon-image-filter);
     }
 
     .icon-wrap .ms-icon {
-      font-family: 'Material Symbols Sharp';
-      font-weight: normal;
-      font-style: normal;
       font-size: 36px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      direction: ltr;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-      font-feature-settings: 'liga';
-      -webkit-font-feature-settings: 'liga';
-      color: currentColor;
     }
 
     .node.selected .icon-wrap {
-      background: rgba(214, 192, 141, .28);
-      border-color: rgba(124, 90, 16, .25);
+      background: rgba(212, 167, 86, .15);
+      border-color: rgba(212, 167, 86, .38);
     }
 
     .node.gambit.selected .icon-wrap {
-      background: rgba(243, 214, 214, .5);
-      border-color: rgba(127, 29, 29, .22);
+      background: rgba(255, 155, 155, .16);
+      border-color: rgba(255, 155, 155, .35);
     }
 
     .node-top {
@@ -265,7 +391,7 @@
       font-size: 16px;
       line-height: 1.15;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--title-color);
     }
 
     .node-meta {
@@ -280,23 +406,23 @@
       font-weight: 800;
       letter-spacing: .04em;
       text-transform: uppercase;
-      border: 1px solid rgba(63,58,50,.12);
-      background: rgba(255,255,255,.75);
-      color: var(--stone-700);
+      border: 1px solid var(--pill-border);
+      background: var(--pill-bg);
+      color: var(--pill-text);
       padding: 5px 7px;
       border-radius: 999px;
       white-space: nowrap;
     }
 
     .pill.danger {
-      background: #fff3f3;
-      border-color: #e5c2c2;
+      background: var(--danger-soft);
+      border-color: var(--danger-border);
       color: var(--danger);
     }
 
     .pill.success {
-      background: #f2f8e9;
-      border-color: #d4e3bc;
+      background: var(--success-soft);
+      border-color: var(--success-border);
       color: var(--success);
     }
 
@@ -316,7 +442,7 @@
       font-size: 22px;
       line-height: 1.1;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--title-color);
     }
 
     .build-list {
@@ -326,15 +452,15 @@
     }
 
     .build-item {
-      border: 1px solid var(--stone-300);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      background: rgba(255,255,255,.78);
+      background: var(--node-bg);
       padding: 12px;
     }
 
     .build-item.gambit {
-      background: #fff4f4;
-      border-color: #e4c6c6;
+      background: var(--gambit-bg);
+      border-color: var(--danger-border);
     }
 
     .build-item-head {
@@ -349,7 +475,7 @@
       font-size: 15px;
       line-height: 1.15;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--title-color);
     }
 
     .rules {
@@ -359,7 +485,7 @@
     }
 
     .rule {
-      border-left: 3px solid rgba(63,58,50,.18);
+      border-left: 3px solid var(--rule-border);
       padding-left: 10px;
     }
 
@@ -368,7 +494,7 @@
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: .05em;
-      color: var(--stone-600);
+      color: var(--text-soft);
       margin-bottom: 4px;
     }
 
@@ -376,20 +502,20 @@
       margin: 0;
       font-size: 13px;
       line-height: 1.5;
-      color: var(--stone-700);
+      color: var(--text-muted);
     }
 
     .trigger-prefix {
       font-weight: 700;
-      color: var(--stone-700);
+      color: var(--text-muted);
     }
 
     .empty {
       padding: 16px;
       border-radius: 16px;
-      background: rgba(255,255,255,.65);
-      border: 1px dashed var(--stone-300);
-      color: var(--stone-600);
+      background: var(--empty-bg);
+      border: 1px dashed var(--empty-border);
+      color: var(--text-soft);
       font-size: 13px;
       line-height: 1.5;
     }
@@ -407,15 +533,16 @@
       gap: 8px;
       padding: 8px 12px;
       border-radius: 999px;
-      border: 1px solid var(--stone-300);
-      background: rgba(255,255,255,.72);
+      border: 1px solid var(--meta-border);
+      background: var(--meta-bg);
       font-size: 12px;
       line-height: 1.35;
-      color: var(--stone-700);
+      color: var(--text-muted);
+      backdrop-filter: blur(8px);
     }
 
     .meta-pill strong {
-      color: var(--stone-900);
+      color: var(--title-color);
       font-weight: 700;
     }
 
@@ -423,6 +550,7 @@
       .layout {
         grid-template-columns: 1fr;
       }
+
       .sidebar {
         position: static;
       }
@@ -445,7 +573,11 @@
             <div>
               <h1 class="title">Battle Artistry Builder</h1>
             </div>
-            <div class="controls"></div>
+            <div class="controls">
+              <button class="btn theme-toggle" id="themeToggleBtn" type="button" aria-pressed="true" aria-label="Switch to light theme">
+                <span class="ms-icon" id="themeToggleIcon" aria-hidden="true">light_mode</span>
+              </button>
+            </div>
           </div>
           <div class="meta-row">
             <div class="meta-pill"><strong>Tempo</strong><span>3 start · 5 max</span></div>
@@ -542,6 +674,54 @@
       { id: 'hold-the-line', type: 'gambit', name: 'Hold the Line', icon: 'holdTheLine', cost: '2 Tempo', timing: 'Reaction, when an ally within 30 feet would be hit by an attack.', risk: 'You are Exposed, and until the end of your next turn your speed becomes 0.', description: 'Move up to 30 feet to a space adjacent to that ally. The triggering attack misses instead. Until the start of your next turn, the attacker has disadvantage on attack rolls against creatures other than you.' },
       { id: 'all-in-verdict', type: 'gambit', name: 'All-In Verdict', icon: 'allInVerdict', cost: '2 Tempo', timing: 'Bonus Action', risk: 'If the target is not reduced to 0 HP by the end of your turn, you become Exposed and have disadvantage on attack rolls until the end of your next turn.', description: 'Choose a target you can see. They become Exposed. If the target is reduced to 0 HP by the end of your turn, regain 2 Tempo and 4d6 health' }
     ];
+
+
+    const THEME_STORAGE_KEY = 'battle-artistry-theme';
+
+    function readStoredTheme() {
+      try {
+        const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+        return savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function writeStoredTheme(theme) {
+      try {
+        window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+      } catch (error) {
+        return;
+      }
+    }
+
+    function applyTheme(theme) {
+      const nextTheme = theme === 'light' ? 'light' : 'dark';
+      document.body.dataset.theme = nextTheme;
+      document.documentElement.style.colorScheme = nextTheme;
+      const toggleButton = document.getElementById('themeToggleBtn');
+      const toggleIcon = document.getElementById('themeToggleIcon');
+      if (toggleButton) {
+        const isDark = nextTheme === 'dark';
+        toggleButton.setAttribute('aria-pressed', String(isDark));
+        toggleButton.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+      if (toggleIcon) {
+        toggleIcon.textContent = nextTheme === 'dark' ? 'light_mode' : 'dark_mode';
+      }
+    }
+
+    function initializeTheme() {
+      applyTheme(readStoredTheme() || 'light');
+      const toggleButton = document.getElementById('themeToggleBtn');
+      if (!toggleButton || toggleButton.dataset.bound === 'true') return;
+      toggleButton.dataset.bound = 'true';
+      toggleButton.addEventListener('click', () => {
+        const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        applyTheme(nextTheme);
+        writeStoredTheme(nextTheme);
+      });
+    }
 
     const state = { selectedAspect: null, maneuvers: [], gambits: [] };
 
@@ -692,10 +872,13 @@
       console.assert(getTimingParts('Reaction, when an ally within 10 feet would be hit by an attack.').action === 'Reaction', 'Timing parser should identify Reaction.');
       console.assert(getTimingParts('Before making a melee weapon attack').action === 'Before attack', 'Timing parser should identify Before attack.');
       console.assert(document.getElementById('resetBtn'), 'Reset button should exist after render.');
+      console.assert(document.getElementById('themeToggleBtn'), 'Theme toggle button should exist.');
+      console.assert(['dark', 'light'].includes(document.body.dataset.theme), 'Theme should initialize to a valid value.');
       resetBuild();
       console.assert(JSON.stringify(state) === JSON.stringify({ selectedAspect: null, maneuvers: [], gambits: [] }), 'resetBuild should clear selections.');
     }
 
+    initializeTheme();
     render();
     runSelfTests();
   </script>
